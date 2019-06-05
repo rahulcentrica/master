@@ -23,23 +23,53 @@ Polls is a simple API allowing consumers to view polls and vote in them.
    + version: 1.0 (string, required) - version of the json api specifications.
 + data (Bundles)
 
+## BundleResponse (object)
++ jsonapi (object)
+   + version: 1.0 (string, required) - version of the json api specifications.
++ data (BundleEntity)
+
+## BundleEntity (object)
+- `id`: 0050561004AF1ED583F0BFFC470B46F5
+- `type`: `Bundles`
+- attributes (Bundles)
+
+## Product (object)
++ `code` (string) - Code for each product as returned from SAP
++ `description` (string)
++ `is-landlord`: true (boolean) - Indicates product identifier is related to landlord.
++ `category` : `COMPOSITE` (enum[string], required)
+    + `STANDALONE` - Product does not have any sub-products. e.g. Kitchen appliance cover is a STANDALONE product.
+    + `COMPOSITE` - Product is composed of one or more sub-products. e.g HomeCare Two is composed of 2 sub products. `Boiler and controls` and `Central heating`
+
+
 ## Bundles (object)
-+ is-address-bundle: `true` (boolean, required) - true if already lead created for address otherwise false
-+ bundles (Bundles)  (array[Bundle], required) - list of allowed bundles if is-addresss-bundle is false otherwise null
++ `is-existing`: true (boolean, required) - true if already lead created for address otherwise false
++ bundles : Bundle (array)  
+   + id: 002 (string, required) - id of bundle.
+    + `boile-code`: CBLR0002 (string, required) - code of bundle.
+    + `boiler-name`: Valiant ecoTech plus combi boiler (string, required) - name of boiler
+    + `total-gross-price`: 2599.00 (string, required) - total gross price of bundle
+    + `total-bundle-Price`: 2599.00 (string, required) - total price of bundle
+    + `total-price-after-discount`: 1899.00 (string, required) - total price of bundle after discount
+    + `total-discount: 700.00 (string, required) - total discount of bundle
+    + boiler-price: 1149.00 (string, required) - price of boiler
+    + installation-price: 1114.00 (string, required) - price of bundle installation
+    + extras :  (array)
+    + allowances (array, optional) - allowances of bundle
 
 
 ## Bundle (object)
-+ id: 002 (string, required) - id of bundle.
-+ boile-code: CBLR0002 (string, required) - code of bundle.
-+ boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
-+ total-gross-price: 2599.00 (string, required) - total gross price of bundle
-+ total-bundle-Price: 2599.00 (string, required) - total price of bundle
-+ total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
-+ total-discount: 700.00 (string, required) - total discount of bundle
-+ boiler-price: 1149.00 (string, required) - price of boiler
-+ installation-price: 1114.00 (string, required) - price of bundle installation
-+ extras (Extra) (array[Extra], required) - defination of extras 
-+ allowances (Allowance) (array[Allowance], optional) - allowances of bundle
+    + id: 002 (string, required) - id of bundle.
+    + boile-code: CBLR0002 (string, required) - code of bundle.
+    + boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
+    + total-gross-price: 2599.00 (string, required) - total gross price of bundle
+    + total-bundle-Price: 2599.00 (string, required) - total price of bundle
+    + total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
+    + total-discount: 700.00 (string, required) - total discount of bundle
+    + boiler-price: 1149.00 (string, required) - price of boiler
+    + installation-price: 1114.00 (string, required) - price of bundle installation
+    + extras (Extra) (array[Extra], required) - defination of extras 
+    + allowances (Allowance) (array[Allowance], optional) - allowances of bundle
 
 ## Extra (object)
 + code: AW002 (string, required) - code of extra's.
@@ -68,29 +98,89 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Response 200 (application/vnd.api+json)
 
-   + Attributes (ProductBundles)
+    + Body
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                 {
+                    "jsonapi": {
+                        "version": "1.0"
+                    },
+                    "data": {
+ 
+                "id": "12345",
+                "type": "Bundles",
+                "attributes": {
+                  "is-existing": true,
+                  "bundles": [{
+                      "id":"001",
+                      "boilecode": "CBLR0002",
+                      "boilerName": "Valiant ecoTech plus combi boiler",
+                      "totalBundlePrice": "2599.00",
+                      "boilerPrice": "1149.00",
+                      "installPrice": "1114.00",
+                      "optionalExtras": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001",
+                          "required": "false"
+                        }
+                      ],
+                      "allowances": [
+                        {
+                          "name": " £200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": " £50.00 off your powerflush",
+                          "amount": "50.00",
+                          "code": "AW002"
+                        },
+                        {
+                          "name": "£50.00 off your magnetic system fiter",
+                          "amount": "50.00",
+                          "code": "AW003"
+                        }
+                      ]
+                    },
                     {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+                      "id":"002",
+                      "boilecode": "CBLR0002",
+                      "boilerName": "Valiant ecoTech plus combi boiler",
+                      "totalBundlePrice": "2599.00",
+                      "boilerPrice": "1149.00",
+                      "installPrice": "1114.00",
+                      "optionalExtras": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001",
+                          "required": "false"
+                        }
+                      ],
+                      "allowances": [
+                        {
+                          "name": " £200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": " £50.00 off your powerflush",
+                          "amount": "50.00",
+                          "code": "AW002"
+                        },
+                        {
+                          "name": "£50.00 off your magnetic system fiter",
+                          "amount": "50.00",
+                          "code": "AW003"
+                        }
+                      ]
+                    }]
+                }
+              }
             }
-        ]
+
+
 
 ### Create a New Question [POST]
 
