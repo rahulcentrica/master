@@ -5,6 +5,55 @@ HOST: http://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
+# Data structures
+
+## Data (object, fixed)
+- `id`: 1234 (string) - Entity Id
+- `type` (string) - Entity type
+
+## Links (object)
+- `self` (string)
+- `related` (string)
+
+## Relationship (object)
+- `data` (Data) - Data of an entity relationship
+
+## ProductBundles (object)
++ jsonapi (object)
+   + version: 1.0 (string, required) - version of the json api specifications.
++ data (Bundles)
+
+## Bundles (object)
++ is-address-bundle: `true` (boolean, required) - true if already lead created for address otherwise false
++ bundles (Bundles)  (array[Bundle], required) - list of allowed bundles if is-addresss-bundle is false otherwise null
+
+
+## Bundle (object)
++ id: 002 (string, required) - id of bundle.
++ boile-code: CBLR0002 (string, required) - code of bundle.
++ boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
++ total-gross-price: 2599.00 (string, required) - total gross price of bundle
++ total-bundle-Price: 2599.00 (string, required) - total price of bundle
++ total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
++ total-discount: 700.00 (string, required) - total discount of bundle
++ boiler-price: 1149.00 (string, required) - price of boiler
++ installation-price: 1114.00 (string, required) - price of bundle installation
++ extras (Extra) (array[Extra], required) - defination of extras 
++ allowances (Allowance) (array[Allowance], optional) - allowances of bundle
+
+## Extra (object)
++ code: AW002 (string, required) - code of extra's.
++ name: Powerflush (string, required) - name of extra's.
++ amount: 500.00 (string, required) - price of extra's.
++ required: false (boolean, required) - need of extra's.
+
+## Allowance (object)
++ code: AW002 (string, required) - code of allowance type
++ name: £500.00 off your powerflush (string, required) - name of allowance
++ amount: 500.00 (string, required) - price of allowance
+
+
+
 ## Quotes Collection [/quotes]
 
 ### List All Quotes [GET]
@@ -18,6 +67,8 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
 
 + Response 200 (application/vnd.api+json)
+
+   + Attributes (ProductBundles)
 
         [
             {
