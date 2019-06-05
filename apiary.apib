@@ -5,11 +5,19 @@ HOST: http://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## Questions Collection [/questions]
+## Quotes Collection [/quotes]
 
-### List All Questions [GET]
+### List All Quotes [GET]
 
-+ Response 200 (application/json)
++ Request get bundles
+
+    + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
+
++ Response 200 (application/vnd.api+json)
 
         [
             {
