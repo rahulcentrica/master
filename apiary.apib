@@ -91,17 +91,17 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
     + Body
 
                  {
-                    "jsonapi": {
-                        "version": "1.0"
-                    },
-                    "data": {
- 
+              "jsonapi": {
+                "version": "1.0"
+              },
+              "data": {
                 "id": "12345",
                 "type": "Bundles",
                 "attributes": {
                   "is-existing": true,
-                  "bundles": [{
-                      "id":"001",
+                  "bundles": [
+                    {
+                      "id": "001",
                       "boilecode": "CBLR0002",
                       "boilerName": "Valiant ecoTech plus combi boiler",
                       "totalBundlePrice": "2599.00",
@@ -134,7 +134,7 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                       ]
                     },
                     {
-                      "id":"002",
+                      "id": "002",
                       "boilecode": "CBLR0002",
                       "boilerName": "Valiant ecoTech plus combi boiler",
                       "totalBundlePrice": "2599.00",
@@ -165,7 +165,8 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                           "code": "AW003"
                         }
                       ]
-                    }]
+                    }
+                  ]
                 }
               }
             }
