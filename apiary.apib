@@ -1,9 +1,7 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://api.britishgas.co.uk/v1
 
-# NEW BOILER SALES ONLINE
-
-Polls is a simple API allowing consumers to view polls and vote in them.
+# New Boiler Bundle Orders
 
 # Data structures
 
@@ -23,53 +21,10 @@ Polls is a simple API allowing consumers to view polls and vote in them.
    + version: 1.0 (string, required) - version of the json api specifications.
 + data (Bundles)
 
-## BundleResponse (object)
-+ jsonapi (object)
-   + version: 1.0 (string, required) - version of the json api specifications.
-+ data (BundleEntity)
-
-## BundleEntity (object)
-- `id`: 0050561004AF1ED583F0BFFC470B46F5
-- `type`: `Bundles`
-- attributes (Bundles)
-
-## Product (object)
-+ `code` (string) - Code for each product as returned from SAP
-+ `description` (string)
-+ `is-landlord`: true (boolean) - Indicates product identifier is related to landlord.
-+ `category` : `COMPOSITE` (enum[string], required)
-    + `STANDALONE` - Product does not have any sub-products. e.g. Kitchen appliance cover is a STANDALONE product.
-    + `COMPOSITE` - Product is composed of one or more sub-products. e.g HomeCare Two is composed of 2 sub products. `Boiler and controls` and `Central heating`
-
-
-## Bundles (object)
-+ `is-existing`: true (boolean, required) - true if already lead created for address otherwise false
-+ bundles : Bundle (array)  
-   + id: 002 (string, required) - id of bundle.
-    + `boile-code`: CBLR0002 (string, required) - code of bundle.
-    + `boiler-name`: Valiant ecoTech plus combi boiler (string, required) - name of boiler
-    + `total-gross-price`: 2599.00 (string, required) - total gross price of bundle
-    + `total-bundle-Price`: 2599.00 (string, required) - total price of bundle
-    + `total-price-after-discount`: 1899.00 (string, required) - total price of bundle after discount
-    + `total-discount: 700.00 (string, required) - total discount of bundle
-    + boiler-price: 1149.00 (string, required) - price of boiler
-    + installation-price: 1114.00 (string, required) - price of bundle installation
-    + extras :  (array)
-    + allowances (array, optional) - allowances of bundle
-
-
-## Bundle (object)
-    + id: 002 (string, required) - id of bundle.
-    + boile-code: CBLR0002 (string, required) - code of bundle.
-    + boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
-    + total-gross-price: 2599.00 (string, required) - total gross price of bundle
-    + total-bundle-Price: 2599.00 (string, required) - total price of bundle
-    + total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
-    + total-discount: 700.00 (string, required) - total discount of bundle
-    + boiler-price: 1149.00 (string, required) - price of boiler
-    + installation-price: 1114.00 (string, required) - price of bundle installation
-    + extras (Extra) (array[Extra], required) - defination of extras 
-    + allowances (Allowance) (array[Allowance], optional) - allowances of bundle
+## Allowance (object)
++ code: AW002 (string, required) - code of allowance type
++ name: £500.00 off your powerflush (string, required) - name of allowance
++ amount: 500.00 (string, required) - price of allowance
 
 ## Extra (object)
 + code: AW002 (string, required) - code of extra's.
@@ -77,20 +32,55 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + amount: 500.00 (string, required) - price of extra's.
 + required: false (boolean, required) - need of extra's.
 
-## Allowance (object)
-+ code: AW002 (string, required) - code of allowance type
-+ name: £500.00 off your powerflush (string, required) - name of allowance
-+ amount: 500.00 (string, required) - price of allowance
+## Bundles (object)
++ is-address-bundle: `true` (boolean, required) - true if already lead created for address otherwise false
++ bundles (Bundles)  (array[Bundle], required) - list of allowed bundles if is-addresss-bundle is false otherwise null
 
+## Bundle (object)
++ id: 002 (string, required) - id of bundle.
++ boile-code: CBLR0002 (string, required) - code of bundle.
++ boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
++ total-gross-price: 2599.00 (string, required) - total gross price of bundle
++ total-bundle-Price: 2599.00 (string, required) - total price of bundle
++ total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
++ total-discount: 700.00 (string, required) - total discount of bundle
++ boiler-price: 1149.00 (string, required) - price of boiler
++ installation-price: 1114.00 (string, required) - price of bundle installation
++ extras (Extra) (array[Extra], required) - defination of extras 
++ allowances (Allowance) (array[Allowance], optional) - allowances of bundle
 
+## LeadResponse (object)
++ `lead-reference` (string, optional)
++ `redirect-link` (string, optional) - Reason for failure
++ `token` (string, optional) - Reason for failure
++ `status` (string, optional) - Reason for failure
 
-## Quotes Collection [/quotes]
+## CreateLeadResponse (object)
++ jsonapi (object)
+   + version: 1.0 (string, required) - version of the json api specifications.
++ data (LeadResponse)
 
-### List All Quotes [GET]
+## Error (object)
++ id: `1528785614271`
++ detail: `error.client.bundle-details-not-found`
++ status : `404`
+
+## ErrorResponse (object)
++ jsonapi (object)
+   + version: 1.0 (string, required) - version of the json api specifications.
++ errors (array, required) - data format in fetch product catalogue will be returned.
+   + (Error)
+
+##  Product Bundle Details
+New Boiler bundle details is used to fetch quotation for bundle from sales-froce system for requested bundles.
+
+## Product Bundle orders [/v1/bundles]
+
+## Get Bundle Details [GET /bundles]
 
 + Request get bundles
 
-    + Headers
+   + Headers
 
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
             content-type: application/vnd.api+json
@@ -179,92 +169,103 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 }
               }
             }
+   
 
++ Request `invalid X-Client-ID`
 
+   + Headers
 
-### Create a New Question [POST]
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
++ Response 403 (application/vnd.api+json)
 
-+ Request (application/json)
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
 
-    + Body
-       
-                {
-              "CustomerData": {
-                "customerDetails": {
-                  "Salutation": "Miss",
-                  "LastName": "Mcamullan",
-                  "FirstName": "Catherine "
-                },
-                "contactDetails": {
-                  "MobilePhone": null,
-                  "Email": "cmac14@virginmedia.com"
-                },
-                "Address": {
-                  "TownCity": "LEEDS",
-                  "Street": "EDINBURGH PLACE",
-                  "PostCode": "LS12 3RQ",
-                  "NameNumber": "14",
-                  "CountyProvince": ""
-                },
-                "chiLeadChannel": "Online",
-                "resStatus": "Owner",
-                "productInterest": "Online Boiler",
-                "mediaCode": "ENGI",
-                "marketingPreference": "EMAIL",
-                "isMarketingConsent": "Yes",
-                "asbestosIdentified": "No",
-                "isHomecare": "Yes",
-                "isPowerflush": "No",
-                "fuelType": "Natural Gas"
-              },
-              "bundle": [
-                {
-                  "id": "001",
-                  "boilerCode": "CBLR0001",
-                  "totalGrossPrice": "2599.00",
-                  "totalDiscount": "700.00",
-                  "totalPriceAfterDicount": "1899.00",
-                  "extrasSold": [
-                    {
-                      "name": "Powerflush",
-                      "amount": "260.00",
-                      "code": "PF001"
-                    }
-                  ],
-                  "allowancesApplied": [
-                    {
-                      "name": "£200.00 Homecare loyalty engineer discount",
-                      "amount": "200.00",
-                      "code": "AW004"
-                    },
-                    {
-                      "name": "£50.00 off your powerflush",
-                      "amount": "500.00",
-                      "code": "AW002"
-                    }
-                  ]
-                }
-              ]
-            }
++ Request backend failure
 
-+ Response 201 (application/json)
+   + Headers
 
-    + Headers
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
 
-            Location: /questions/2
++ Response 424 (application/vnd.api+json)
 
-    + Body
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: dependency failure
+               + status: 424
 
-              {
-               "data":{
-                  "id":"3214324454325",
-                  "type":"appointments",
-                  "attributes":{
-                     
-                  }
-               }
-            }
+## Group Create Bundle Lead
+Create Bundle Customer end point is used to create a lead in salesforce system for selected bundle by customer.
+## Create Bundle Lead [`/v1/bundle-lead`]
+
+## Create Bundle Orders [POST /bundle-lead]
+
++ Request create bundle lead 
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
+   + Attributes (object)
+      + data (object)
+         + type: `services-orders` (string)
+         + attributes (object)
+               + `as-best-of-identified`: I am not Sure (string, required) - Surname of the customer.
+               + `fule-type`: Gas (string, optional) - Surname of the customer.
+               + `marketing-preference`: email (array[string], required) - Mode of communication preferred by the customer.
+               + `is-marketing-consent`: Yes (array[string], required) - Mode of communication preferred by the customer.
+               + `is-homecare`: Yes (array[string], required) - Mode of communication preferred by the customer.
+               + `is-power-flush`: Yes (array[string], required) - Mode of communication preferred by the customer.
+               + `bundle-details` (array[Bundle], required) - Contact telephone number of the customer.
+         + relationships (object)
+               + `address` (object,required)
+                     + data (object)
+                        + id: 12346 (string, required) - Id of the resource.
+                        + type: addresses (string, required) - Type of the resource.
+               + `customer` (object, required)
+                     + data (object)
+                        + id: 12346 (string, required) - Id of the resource.
+                        + type: addresses (string, required) - Type of the resource.
+              
+
++ Response 202 (application/vnd.api+json)
+
+   + Attributes (CreateLeadResponse)
+
++ Request `invalid X-Client-ID`
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 403 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
+
++ Request backend failure
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 424 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: dependency failure
+               + status: 424
