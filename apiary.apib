@@ -190,15 +190,66 @@ form of choices.
 
 + Request (application/json)
 
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
+    + Body
+       
+                {
+              "CustomerData": {
+                "customerDetails": {
+                  "Salutation": "Miss",
+                  "LastName": "Mcamullan",
+                  "FirstName": "Catherine "
+                },
+                "contactDetails": {
+                  "MobilePhone": null,
+                  "Email": "cmac14@virginmedia.com"
+                },
+                "Address": {
+                  "TownCity": "LEEDS",
+                  "Street": "EDINBURGH PLACE",
+                  "PostCode": "LS12 3RQ",
+                  "NameNumber": "14",
+                  "CountyProvince": ""
+                },
+                "chiLeadChannel": "Online",
+                "resStatus": "Owner",
+                "productInterest": "Online Boiler",
+                "mediaCode": "ENGI",
+                "marketingPreference": "EMAIL",
+                "isMarketingConsent": "Yes",
+                "asbestosIdentified": "No",
+                "isHomecare": "Yes",
+                "isPowerflush": "No",
+                "fuelType": "Natural Gas"
+              },
+              "bundle": [
+                {
+                  "id": "001",
+                  "boilerCode": "CBLR0001",
+                  "totalGrossPrice": "2599.00",
+                  "totalDiscount": "700.00",
+                  "totalPriceAfterDicount": "1899.00",
+                  "extrasSold": [
+                    {
+                      "name": "Powerflush",
+                      "amount": "260.00",
+                      "code": "PF001"
+                    }
+                  ],
+                  "allowancesApplied": [
+                    {
+                      "name": "£200.00 Homecare loyalty engineer discount",
+                      "amount": "200.00",
+                      "code": "AW004"
+                    },
+                    {
+                      "name": "£50.00 off your powerflush",
+                      "amount": "500.00",
+                      "code": "AW002"
+                    }
+                  ]
+                }
+              ]
+            }
 
 + Response 201 (application/json)
 
@@ -208,22 +259,12 @@ form of choices.
 
     + Body
 
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+              {
+               "data":{
+                  "id":"3214324454325",
+                  "type":"appointments",
+                  "attributes":{
+                     
+                  }
+               }
             }
