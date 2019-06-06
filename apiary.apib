@@ -33,8 +33,8 @@ HOST: http://api.britishgas.co.uk/v1
 + required: false (boolean, required) - need of extra's.
 
 ## Bundles (object)
-+ is-address-bundle: `true` (boolean, required) - true if already lead created for address otherwise false
-+ bundles (Bundles)  (array[Bundle], required) - list of allowed bundles if is-addresss-bundle is false otherwise null
++ is-address-used: `true` (boolean, required) - true if already lead created for address otherwise false
++ bundles (array[Bundle], optional) - list of allowed bundles if is-addresss-bundle is false otherwise null
 
 ## Bundle (object)
 + id: 002 (string, required) - id of bundle.
@@ -74,9 +74,9 @@ HOST: http://api.britishgas.co.uk/v1
 ##  Product Bundle Details
 New Boiler bundle details is used to fetch quotation for bundle from sales-froce system for requested bundles.
 
-## Product Bundle orders [/v1/bundles]
+## Product Bundle orders [/v1/product-bundles/]
 
-## Get Bundle Details [GET /bundles]
+## Get Bundle Details [GET /product-bundles]
 
 + Request get bundles
 
@@ -90,7 +90,7 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
 
     + Body
 
-                 {
+            {
               "jsonapi": {
                 "version": "1.0"
               },
@@ -98,7 +98,7 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                 "id": "12345",
                 "type": "Bundles",
                 "attributes": {
-                  "is-existing": true,
+                  "is-address-used": true,
                   "bundles": [
                     {
                       "id": "001",
@@ -167,6 +167,69 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                       ]
                     }
                   ]
+                }
+              }
+            }
+   
+
++ Request `invalid X-Client-ID`
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 403 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
+
++ Request backend failure
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 424 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: dependency failure
+               + status: 424
+
+## Validate Address Bundle Details [GET /product-bundles/{id}]
+
++ Parameters
+
+    + id: `123456` (string) - Id of selected address
+
++ Request get bundles
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+            
++ Response 200 (application/vnd.api+json)
+
+    + Body
+
+            {
+              "jsonapi": {
+                "version": "1.0"
+              },
+              "data": {
+                "id": "12345",
+                "type": "Bundles",
+                "attributes": {
+                  "is-address-used": true,
+                  "bundles": []
+                    
                 }
               }
             }
