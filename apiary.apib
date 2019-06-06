@@ -200,69 +200,8 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
 
    + Headers
 
-            x-client-id: `cbdcfa43-dd67-4c38-b418-83572a936fca`
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
             content-type: application/vnd.api+json
-
-    + Body
-
-            {
-                  "CustomerData": {
-                    "customerDetails": {
-                      "Salutation": "Miss",
-                      "LastName": "Mcamullan",
-                      "FirstName": "Catherine "
-                    },
-                    "contactDetails": {
-                      "MobilePhone": null,
-                      "Email": "cmac14@virginmedia.com"
-                    },
-                    "Address": {
-                      "TownCity": "LEEDS",
-                      "Street": "EDINBURGH PLACE",
-                      "PostCode": "LS12 3RQ",
-                      "NameNumber": "14",
-                      "CountyProvince": ""
-                    },
-                    "chiLeadChannel": "Online",
-                    "resStatus": "Owner",
-                    "productInterest": "Online Boiler",
-                    "mediaCode": "ENGI",
-                    "marketingPreference": "EMAIL",
-                    "isMarketingConsent": "Yes",
-                    "asbestosIdentified": "No",
-                    "isHomecare": "Yes",
-                    "isPowerflush": "No",
-                    "fuelType": "Natural Gas"
-                  },
-                  "bundle": [
-                    {
-                      "id": "001",
-                      "boilerCode": "CBLR0001",
-                      "totalGrossPrice": "2599.00",
-                      "totalDiscount": "700.00",
-                      "totalPriceAfterDicount": "1899.00",
-                      "extrasSold": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001"
-                        }
-                      ],
-                      "allowancesApplied": [
-                        {
-                          "name": "£200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": "£50.00 off your powerflush",
-                          "amount": "500.00",
-                          "code": "AW002"
-                        }
-                      ]
-                    }
-                  ]
-            }
             
 + Response 200 (application/vnd.api+json)
 
@@ -324,10 +263,70 @@ Create Bundle Customer end point is used to create a lead in salesforce system f
 
    + Headers
 
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            x-client-id: `cbdcfa43-dd67-4c38-b418-83572a936fca`
             content-type: application/vnd.api+json
-    + Body 
-    
+
+    + Body
+
+            {
+              "CustomerData": {
+                "customerDetails": {
+                  "Salutation": "Miss",
+                  "LastName": "Mcamullan",
+                  "FirstName": "Catherine "
+                },
+                    "contactDetails": {
+                      "MobilePhone": null,
+                      "Email": "cmac14@virginmedia.com"
+                    },
+                    "Address": {
+                      "TownCity": "LEEDS",
+                      "Street": "EDINBURGH PLACE",
+                      "PostCode": "LS12 3RQ",
+                      "NameNumber": "14",
+                      "CountyProvince": ""
+                    },
+                    "chiLeadChannel": "Online",
+                    "resStatus": "Owner",
+                    "productInterest": "Online Boiler",
+                    "mediaCode": "ENGI",
+                    "marketingPreference": "EMAIL",
+                    "isMarketingConsent": "Yes",
+                    "asbestosIdentified": "No",
+                    "isHomecare": "Yes",
+                    "isPowerflush": "No",
+                    "fuelType": "Natural Gas"
+                  },
+                  "bundle": [
+                    {
+                      "id": "001",
+                      "boilerCode": "CBLR0001",
+                      "totalGrossPrice": "2599.00",
+                      "totalDiscount": "700.00",
+                      "totalPriceAfterDicount": "1899.00",
+                      "extrasSold": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001"
+                        }
+                      ],
+                      "allowancesApplied": [
+                        {
+                          "name": "£200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": "£50.00 off your powerflush",
+                          "amount": "500.00",
+                          "code": "AW002"
+                        }
+                      ]
+                    }
+              ]
+            }
+
     
 
 + Response 201 (application/vnd.api+json)
