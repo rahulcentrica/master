@@ -187,22 +187,10 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                + detail: `X-Client-ID not supplied!`
                + status: 403
 
-+ Request backend failure
 
-   + Headers
 
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 424 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: dependency failure
-               + status: 424
-
-## Validate Address Bundle Details [GET /product-bundles/{id}]
+## Validate Address For Existing Bundle Details [GET /product-bundles/{id}]
+> `Note:` Appointments are not retrievable for CHI as soon as it is booked. While the status is still `intent-captured`, the client can GET an appointment.
 
 + Parameters
 
@@ -212,8 +200,69 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
 
    + Headers
 
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            x-client-id: `cbdcfa43-dd67-4c38-b418-83572a936fca`
             content-type: application/vnd.api+json
+
+    + Body
+
+            {
+                  "CustomerData": {
+                    "customerDetails": {
+                      "Salutation": "Miss",
+                      "LastName": "Mcamullan",
+                      "FirstName": "Catherine "
+                    },
+                    "contactDetails": {
+                      "MobilePhone": null,
+                      "Email": "cmac14@virginmedia.com"
+                    },
+                    "Address": {
+                      "TownCity": "LEEDS",
+                      "Street": "EDINBURGH PLACE",
+                      "PostCode": "LS12 3RQ",
+                      "NameNumber": "14",
+                      "CountyProvince": ""
+                    },
+                    "chiLeadChannel": "Online",
+                    "resStatus": "Owner",
+                    "productInterest": "Online Boiler",
+                    "mediaCode": "ENGI",
+                    "marketingPreference": "EMAIL",
+                    "isMarketingConsent": "Yes",
+                    "asbestosIdentified": "No",
+                    "isHomecare": "Yes",
+                    "isPowerflush": "No",
+                    "fuelType": "Natural Gas"
+                  },
+                  "bundle": [
+                    {
+                      "id": "001",
+                      "boilerCode": "CBLR0001",
+                      "totalGrossPrice": "2599.00",
+                      "totalDiscount": "700.00",
+                      "totalPriceAfterDicount": "1899.00",
+                      "extrasSold": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001"
+                        }
+                      ],
+                      "allowancesApplied": [
+                        {
+                          "name": "£200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": "£50.00 off your powerflush",
+                          "amount": "500.00",
+                          "code": "AW002"
+                        }
+                      ]
+                    }
+                  ]
+            }
             
 + Response 200 (application/vnd.api+json)
 
@@ -277,30 +326,11 @@ Create Bundle Customer end point is used to create a lead in salesforce system f
 
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
             content-type: application/vnd.api+json
+    + Body 
+    
+    
 
-   + Attributes (object)
-      + data (object)
-         + type: `services-orders` (string)
-         + attributes (object)
-               + `as-best-of-identified`: I am not Sure (string, required) - Surname of the customer.
-               + `fule-type`: Gas (string, optional) - Surname of the customer.
-               + `marketing-preference`: email (array[string], required) - Mode of communication preferred by the customer.
-               + `is-marketing-consent`: Yes (array[string], required) - Mode of communication preferred by the customer.
-               + `is-homecare`: Yes (array[string], required) - Mode of communication preferred by the customer.
-               + `is-power-flush`: Yes (array[string], required) - Mode of communication preferred by the customer.
-               + `bundle-details` (array[Bundle], required) - Contact telephone number of the customer.
-         + relationships (object)
-               + `address` (object,required)
-                     + data (object)
-                        + id: 12346 (string, required) - Id of the resource.
-                        + type: addresses (string, required) - Type of the resource.
-               + `customer` (object, required)
-                     + data (object)
-                        + id: 12346 (string, required) - Id of the resource.
-                        + type: addresses (string, required) - Type of the resource.
-              
-
-+ Response 202 (application/vnd.api+json)
++ Response 201 (application/vnd.api+json)
 
    + Attributes (CreateLeadResponse)
 
