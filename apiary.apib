@@ -33,29 +33,29 @@ HOST: http://api.britishgas.co.uk/v1
 + required: false (boolean, required) - need of extra's.
 
 ## Bundles (object)
-+ is-address-used: `true` (boolean, required) - true if already lead created for address otherwise false
-+ bundles (array[Bundle], optional) - list of allowed bundles if is-addresss-bundle is false otherwise null
++ is-address-used: `true` (boolean, required) - true if already product bundle assingned for address otherwise false
++ bundles: null (array[Bundle], optional) - list of allowed bundles if is-addresss-used is false otherwise null
 
 ## Bundle (object)
-+ id: 002 (string, required) - id of bundle.
-+ boile-code: CBLR0002 (string, required) - code of bundle.
-+ boiler-name: Valiant ecoTech plus combi boiler (string, required) - name of boiler
-+ total-gross-price: 2599.00 (string, required) - total gross price of bundle
-+ total-bundle-Price: 2599.00 (string, required) - total price of bundle
-+ total-price-after-discount: 1899.00 (string, required) - total price of bundle after discount
-+ total-discount: 700.00 (string, required) - total discount of bundle
-+ boiler-price: 1149.00 (string, required) - price of boiler
-+ installation-price: 1114.00 (string, required) - price of bundle installation
-+ extras (Extra) (array[Extra], required) - defination of extras 
-+ allowances (Allowance) (array[Allowance], optional) - allowances of bundle
++ `id`: 002 (string, required) - id of bundle.
++ `boile-code`: CBLR0002 (string, required) - code of bundle.
++ `boiler-name`: Valiant ecoTech plus combi boiler (string, required) - name of boiler
++ `total-gross-price`: 2599.00 (string, optional) - total gross price of bundle
++ `total-bundle-Price`: 2599.00 (string, optional) - total price of bundle
++ `total-price-after-discount`: 1899.00 (string, optional) - total price of bundle after discount
++ `total-discount`: 700.00 (string, optional) - total discount of bundle
++ `boiler-price`: 1149.00 (string, optional) - price of boiler
++ `installation-price`: 1114.00 (string, optional) - price of bundle installation
++ `extras` (Extra) (array[Extra], optional) - Extras with bundle product
++ `allowances` (Allowance) (array[Allowance], optional) - allowances of bundle
 
 ## LeadResponse (object)
-+ `lead-reference` (string, optional)
-+ `redirect-link` (string, optional) - Reason for failure
-+ `token` (string, optional) - Reason for failure
-+ `status` (string, optional) - Reason for failure
++ `lead-reference`: 123456 (string, required)
++ `redirect-link`:`http://sample.redirect.com` (string, optional) - Reason for failure
++ `token`: `RES1234` (string, optional) - Reason for failure
++ `status`: `success` (string, optional) - Reason for failure
 
-## CreateLeadResponse (object)
+## BundleLeadResponse (object)
 + jsonapi (object)
    + version: 1.0 (string, required) - version of the json api specifications.
 + data (LeadResponse)
@@ -72,7 +72,7 @@ HOST: http://api.britishgas.co.uk/v1
    + (Error)
 
 ##  Product Bundle Details
-New Boiler bundle details is used to fetch quotation for bundle from sales-froce system for requested bundles.
+Find the available product bundle details for given address 
 
 ## Product Bundle orders [/v1/product-bundles/]
 
@@ -112,6 +112,12 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                           "name": "Powerflush",
                           "amount": "260.00",
                           "code": "PF001",
+                          "required": "false"
+                        },
+                        {
+                          "name": "Thermostats",
+                          "amount": "260.00",
+                          "code": "PF002",
                           "required": "false"
                         }
                       ],
@@ -253,13 +259,69 @@ New Boiler bundle details is used to fetch quotation for bundle from sales-froce
                + detail: dependency failure
                + status: 424
 
-## Group Create Bundle Lead
-Create Bundle Customer end point is used to create a lead in salesforce system for selected bundle by customer.
-## Create Bundle Lead [`/v1/bundle-lead`]
 
-## Create Bundle Orders [POST /bundle-lead]
++ Request wrong bundle details passed in the request
 
-+ Request create bundle lead 
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
+
++ Response 200 (application/vnd.api+json)
+
+    + Body
+
+            {
+                "jsonapi": {
+                    "version": "1.0"
+                },
+                "errors": [
+                    {
+                        "detail": "unable to book an appointment",
+                        "id": "1559902487086",
+                        "status": "500"
+                    }
+                ]
+            }
+   
+
++ Request `invalid X-Client-ID`
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 403 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
+
++ Response 400 (application/vnd.api+json)
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - version of the json api specificaiton.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string, required) - a unique identifier for this particular occurrence of the problem.
+               + detail: `error.bundle.not.found` (string) - a human-readable explanation specific to this occurrence of the problem.
+               + status: 400 (string) - the HTTP status code applicable to this problem, expressed as a string value.
+
+
+
+## Group Create Bundle Order
+Confirm the product bundle and create the order or booking reference.
+
+## Create Bundle Orders [`/v1/bundle-order`]
+
+## Create Bundle Orders [POST /bundle-order]
+
++ Request create bundle order 
 
    + Headers
 
@@ -268,64 +330,34 @@ Create Bundle Customer end point is used to create a lead in salesforce system f
 
     + Body
 
-            {
-              "CustomerData": {
-                "customerDetails": {
-                  "Salutation": "Miss",
-                  "LastName": "Mcamullan",
-                  "FirstName": "Catherine "
-                },
-                    "contactDetails": {
-                      "MobilePhone": null,
-                      "Email": "cmac14@virginmedia.com"
+               {
+                  "data": {
+                    "type": "Bundle",
+                    "attributes": {
+                      "as-best-of-identified": "I am not Sure",
+                      "lead-channel": "Online",
+                      "residence-status": "Owner",
+                      "product-interest": "Online Boiler",
+                      "is-home-care": "true",
+                      "is-power-flush": "true",
+                      "fuelType": "Gas"
                     },
-                    "Address": {
-                      "TownCity": "LEEDS",
-                      "Street": "EDINBURGH PLACE",
-                      "PostCode": "LS12 3RQ",
-                      "NameNumber": "14",
-                      "CountyProvince": ""
-                    },
-                    "chiLeadChannel": "Online",
-                    "resStatus": "Owner",
-                    "productInterest": "Online Boiler",
-                    "mediaCode": "ENGI",
-                    "marketingPreference": "EMAIL",
-                    "isMarketingConsent": "Yes",
-                    "asbestosIdentified": "No",
-                    "isHomecare": "Yes",
-                    "isPowerflush": "No",
-                    "fuelType": "Natural Gas"
-                  },
-                  "bundle": [
-                    {
-                      "id": "001",
-                      "boilerCode": "CBLR0001",
-                      "totalGrossPrice": "2599.00",
-                      "totalDiscount": "700.00",
-                      "totalPriceAfterDicount": "1899.00",
-                      "extrasSold": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001"
+                    "relationships": {
+                      "address": {
+                        "data": {
+                          "id": "12334456",
+                          "type": "addresses"
                         }
-                      ],
-                      "allowancesApplied": [
-                        {
-                          "name": "£200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": "£50.00 off your powerflush",
-                          "amount": "500.00",
-                          "code": "AW002"
+                      },
+                      "customer": {
+                        "data": {
+                          "type": "customers",
+                          "id": "3612094486"
                         }
-                      ]
+                      }
                     }
-              ]
-            }
+                  }
+                }
 
     
 
