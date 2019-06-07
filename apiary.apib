@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://api.britishgas.co.uk/v1
 
-# New Boiler Bundle Orders
+# Product Bundle Orders
 
 # Data structures
 
@@ -71,129 +71,8 @@ HOST: http://api.britishgas.co.uk/v1
 + errors (array, required) - data format in fetch product catalogue will be returned.
    + (Error)
 
-##  Find Product Bundle For addess
+## Group Find Product Bundle For addess
 Find the available product bundle details for given address 
-
-## Product Bundle orders [/v1/product-bundles/]
-
-## Get Bundle Details [GET /product-bundles]
-> To retrieve eligible bundles for given addresss and passed required details in header.
-
-+ Request get bundles
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
-
-+ Response 200 (application/vnd.api+json)
-
-    + Body
-
-            {
-              "jsonapi": {
-                "version": "1.0"
-              },
-              "data": {
-                "id": "12345",
-                "type": "Bundles",
-                "attributes": {
-                  "is-address-used": true,
-                  "bundles": [
-                    {
-                      "id": "001",
-                      "boilecode": "CBLR0002",
-                      "boilerName": "Valiant ecoTech plus combi boiler",
-                      "totalBundlePrice": "2599.00",
-                      "boilerPrice": "1149.00",
-                      "installPrice": "1114.00",
-                      "optionalExtras": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001",
-                          "required": "false"
-                        },
-                        {
-                          "name": "Thermostats",
-                          "amount": "260.00",
-                          "code": "PF002",
-                          "required": "false"
-                        }
-                      ],
-                      "allowances": [
-                        {
-                          "name": " £200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": " £50.00 off your powerflush",
-                          "amount": "50.00",
-                          "code": "AW002"
-                        },
-                        {
-                          "name": "£50.00 off your magnetic system fiter",
-                          "amount": "50.00",
-                          "code": "AW003"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "002",
-                      "boilecode": "CBLR0002",
-                      "boilerName": "Valiant ecoTech plus combi boiler",
-                      "totalBundlePrice": "2599.00",
-                      "boilerPrice": "1149.00",
-                      "installPrice": "1114.00",
-                      "optionalExtras": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001",
-                          "required": "false"
-                        }
-                      ],
-                      "allowances": [
-                        {
-                          "name": " £200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": " £50.00 off your powerflush",
-                          "amount": "50.00",
-                          "code": "AW002"
-                        },
-                        {
-                          "name": "£50.00 off your magnetic system fiter",
-                          "amount": "50.00",
-                          "code": "AW003"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-   
-
-+ Request `invalid X-Client-ID`
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 403 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: `X-Client-ID not supplied!`
-               + status: 403
-
 
 
 ## Verify Address  [GET /product-bundles/{id}]
@@ -315,12 +194,131 @@ Find the available product bundle details for given address
 
 
 
+
+##Get Bundle Details [GET /product-bundles]
+> To retrieve eligible bundles for given addresss and passed required details in header.
+
++ Request get bundles
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
+
++ Response 200 (application/vnd.api+json)
+
+    + Body
+
+            {
+              "jsonapi": {
+                "version": "1.0"
+              },
+              "data": {
+                "id": "12345",
+                "type": "Bundles",
+                "attributes": {
+                  "is-address-used": true,
+                  "bundles": [
+                    {
+                      "id": "001",
+                      "boilecode": "CBLR0002",
+                      "boilerName": "Valiant ecoTech plus combi boiler",
+                      "totalBundlePrice": "2599.00",
+                      "boilerPrice": "1149.00",
+                      "installPrice": "1114.00",
+                      "optionalExtras": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001",
+                          "required": "false"
+                        },
+                        {
+                          "name": "Thermostats",
+                          "amount": "260.00",
+                          "code": "PF002",
+                          "required": "false"
+                        }
+                      ],
+                      "allowances": [
+                        {
+                          "name": " £200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": " £50.00 off your powerflush",
+                          "amount": "50.00",
+                          "code": "AW002"
+                        },
+                        {
+                          "name": "£50.00 off your magnetic system fiter",
+                          "amount": "50.00",
+                          "code": "AW003"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "002",
+                      "boilecode": "CBLR0002",
+                      "boilerName": "Valiant ecoTech plus combi boiler",
+                      "totalBundlePrice": "2599.00",
+                      "boilerPrice": "1149.00",
+                      "installPrice": "1114.00",
+                      "optionalExtras": [
+                        {
+                          "name": "Powerflush",
+                          "amount": "260.00",
+                          "code": "PF001",
+                          "required": "false"
+                        }
+                      ],
+                      "allowances": [
+                        {
+                          "name": " £200.00 Homecare loyalty engineer discount",
+                          "amount": "200.00",
+                          "code": "AW004"
+                        },
+                        {
+                          "name": " £50.00 off your powerflush",
+                          "amount": "50.00",
+                          "code": "AW002"
+                        },
+                        {
+                          "name": "£50.00 off your magnetic system fiter",
+                          "amount": "50.00",
+                          "code": "AW003"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+   
+
++ Request `invalid X-Client-ID`
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 403 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
+
 ## Group Create Bundle Order
 Confirm the product bundle and create the order or booking reference.
 
-## Create Bundle Orders [`/v1/bundle-order`]
+# Confirm Bundle Orders [`bundle-order`]
 
-## Create Bundle Orders [POST /bundle-order]
+# Confirm Bundle Orders [POST /bundle-order]
 
 + Request create bundle order 
 
