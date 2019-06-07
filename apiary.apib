@@ -71,12 +71,13 @@ HOST: http://api.britishgas.co.uk/v1
 + errors (array, required) - data format in fetch product catalogue will be returned.
    + (Error)
 
-##  Product Bundle Details
+##  Find Product Bundle For addess
 Find the available product bundle details for given address 
 
 ## Product Bundle orders [/v1/product-bundles/]
 
 ## Get Bundle Details [GET /product-bundles]
+> To retrieve eligible bundles for given addresss and passed required details in header.
 
 + Request get bundles
 
@@ -195,8 +196,8 @@ Find the available product bundle details for given address
 
 
 
-## Validate Address For Existing Bundle Details [GET /product-bundles/{id}]
-> `Note:` Appointments are not retrievable for CHI as soon as it is booked. While the status is still `intent-captured`, the client can GET an appointment.
+## Verify Address  [GET /product-bundles/{id}]
+> To Verify if addess has any existing bundle associated.
 
 + Parameters
 
