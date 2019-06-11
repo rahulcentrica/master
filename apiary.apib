@@ -13,6 +13,17 @@ HOST: http://api.britishgas.co.uk/v1
 - `self` (string)
 - `related` (string)
 
+## Error (object)
++ id: `1528785614271`
++ detail: `error.client.bundle-details-not-found`
++ status : `404`
+
+## ErrorResponse (object)
++ jsonapi (object)
+   + version: 1.0 (string, required) - version of the json api specifications.
++ errors (array, required) - data format in fetch product catalogue will be returned.
+   + (Error)
+
 ## Relationship (object)
 - `data` (Data) - Data of an entity relationship
 
@@ -85,6 +96,7 @@ HOST: http://api.britishgas.co.uk/v1
 + id: `3612345678` (string) - Unique identifier for a customer, bp number, not ucrn
 + type: customers (string) - the resource type
 + attributes (Bundles) - attributes of the resource
+
 
 ## Group Product Bundles
 Product Bundles represents package of multiple products for Online product sales. When you retrieve a bundle, eligible extra and allowances will be included by default.
@@ -168,7 +180,7 @@ Retrieves all product-bundles
                + detail: `read bundle failed` (string).
                + status: 500 (string) - character-text equivalent of HTTP code.
 
-## create a new customer [POST /v1/bundle-order]
+## create bundle order[POST /v1/bundle-order]
 
 + Request
 
@@ -208,55 +220,32 @@ Retrieves all product-bundles
                 + status: `success`
                 
 
-+ Request invalid inputs
++ Request `invalid X-Client-ID`
 
    + Headers
 
-            content-type: application/vnd.api+json
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
 
-   + Attributes
-       + data (object, required)
-           + type: customers (string)
-           + attributes
-                + title: Mr
-                + `first-name`: "12323" (string)
-                + surname: "3245" (string)
-                + `date-of-birth`: `2008-09-15`
-                + `telephone-numbers` (array)
-                    + number: 01132578895, type: home, primary: true
-                    + number: 0738178, type: mobile
-                + `interested-in-smart-meter`: true (boolean)
-                + email: kjoneailcom
-           + relationships (object) - related resources for customers
-                + `correspondence-address` (AddressRelationship)
-                    + data (object, required)
-                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
-                        + type: `addresses` (string) - type of resource
-                        
-+ Response 400
++ Response 403 (application/vnd.api+json)
 
-    + Attributes (object)
-        + jsonapi (object)
-            + version: 1.0 (string) - specification version.
-        + errors (array)
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.first-name.invalid` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.surname.invalid` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.date-of-birth.invalid` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.telephone-number.invalid` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.email.invalid` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: `X-Client-ID not supplied!`
+               + status: 403
+
++ Request backend failure
+
+   + Headers
+
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            content-type: application/vnd.api+json
+
++ Response 424 (application/vnd.api+json)
+
+   + Attributes (ErrorResponse)
+      + errors (array)
+         + (Error)
+               + detail: dependency failure
+               + status: 424
