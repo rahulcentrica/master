@@ -78,7 +78,7 @@ HOST: http://api.britishgas.co.uk/v1
    + related: `http://api.britishgas.co.uk/v1/customers/3612345678/correspondenceAddress` (string, required)
 + data (array[Relation], required)
 
-## PremiseRelationship (object)
+## CustomerRelationship (object)
 
 + links (object, required)
    + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/premises` (string, required)
@@ -122,7 +122,7 @@ Retrieves all product-bundles
 
             content-type: application/vnd.api+json
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            identity-bundle: {"address-id": "1234356", "bundles": [bundle1,bundle2], "isHomeCare": "false", "isPowerFlush": "false","extras":"[extra1,extra2]"}
+            identity-bundle: {"address-id": "08937e42-49f0-4e11-90de-343c6b7f73c9", "bundles": [bundle1,bundle2], "isHomeCare": "false", "isPowerFlush": "false","extras":"[extra1,extra2]"}
 
 + Response 200 (application/vnd.api+json)
 
@@ -137,7 +137,7 @@ Retrieves all product-bundles
 
             content-type: application/vnd.api+json
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            identity-bundle: {"address-id": "1234356", "bundles": null, "isHomeCare": "false", "isPowerFlush": "false","extras":"null"}
+            identity-bundle: {"address-id": "08937e42-49f0-4e11-90de-343c6b7f73c9", "bundles": null, "isHomeCare": "false", "isPowerFlush": "false","extras":"null"}
 
 + Response 404 (application/vnd.api+json)
 
@@ -151,7 +151,7 @@ Retrieves all product-bundles
                + status: 404 (string) - the HTTP status code applicable to this problem, expressed as a string value.
 
 
-+ Request To Verify if addess has any existing bundle associated.
++ Request To Verify if addess has any existing bundle associated- bundle list will be null.
 
     + Headers
 
@@ -167,25 +167,7 @@ Retrieves all product-bundles
         + data (ProductBundleResource) - the document’s “primary data”
 
 
-+ Request Customer not found - anonymous
-
-    + Headers
-
-            content-type: application/vnd.api+json
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-
-+ Response 404 (application/vnd.api+json)
-
-    + Attributes (object)
-        + jsonapi (object)
-            + version: 1.0 (string) - version of the json api specificaiton.
-        + errors (array)
-            + (object)
-               + id: 1467732747181 (string, required) - a unique identifier for this particular occurrence of the problem.
-               + detail: `error.customers.not-found` (string) - a human-readable explanation specific to this occurrence of the problem.
-               + status: 404 (string) - the HTTP status code applicable to this problem, expressed as a string value.
-
-+ Request Unable to retrieve customer
++ Request Unable to retrieve bundle
 
     + Headers
 
@@ -200,10 +182,10 @@ Retrieves all product-bundles
         + errors (array)
             + (object)
                + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `read customer failed` (string).
+               + detail: `read bundle failed` (string).
                + status: 500 (string) - character-text equivalent of HTTP code.
 
-## create a new customer [POST /v1/customers]
+## create a new customer [POST /v1/bundle-order]
 
 + Request
 
@@ -215,12 +197,19 @@ Retrieves all product-bundles
    + Attributes
        + data (object, required)
            + type: customers (string)
-           + attributes (Customer, required)
+           + attributes 
+                + title: Mr
+                + `first-name`: George
+                + surname: Bush
            + relationships (object) - related resources for customers
-                + `correspondence-address` (AddressRelationship)
+                + `address` (AddressRelationship)
                     + data (object, required)
                         + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
                         + type: `addresses` (string) - type of resource
+                + `customer` (CustomerRelationship)
+                    + data (object, required)
+                        + id: `3612091619` (string) - Id of related customer
+                        + type: `customers` (string) - type of resource
 
 + Response 201
 
