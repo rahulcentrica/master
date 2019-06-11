@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://api.britishgas.co.uk/v1
 
-# Product Bundle Orders
+# Product Bundles 
 
 # Data structures
 
@@ -16,25 +16,38 @@ HOST: http://api.britishgas.co.uk/v1
 ## Relationship (object)
 - `data` (Data) - Data of an entity relationship
 
-## ProductBundles (object)
-+ jsonapi (object)
-   + version: 1.0 (string, required) - version of the json api specifications.
-+ data (Bundles)
 
-## Allowance (object)
-+ code: AW002 (string, required) - code of allowance type
-+ name: £500.00 off your powerflush (string, required) - name of allowance
-+ amount: 500.00 (string, required) - price of allowance
 
-## Extra (object)
-+ code: AW002 (string, required) - code of extra's.
-+ name: Powerflush (string, required) - name of extra's.
-+ amount: 500.00 (string, required) - price of extra's.
-+ required: false (boolean, required) - need of extra's.
+## TelephoneNumber (object)
+
++ number: 0738123456 (string, required) - Telephone number
++ type (enum, optional) - Type of telephone number (`home`, `work` or `mobile`)
+    + home (string)
+    + work (string)
+    + mobile (string)
+    + Default: `home`
++ primary: false (boolean, optional)
+    + Default: false
+
+## Customer (object)
+
++ title: Mr (string, required) - Title of customer
++ `first-name`: George (string, required) - First name of customer
++ `middle-name`: Walsh (string,optional) - Middle name of the customer
++ surname: Bush (string, required) - Surname of customer
++ `date-of-birth`: `2008-09-15T15:53:00+05:00` (string, required) - Date of birth for the customer (expressed in ISO 8601 format)
++ `telephone-numbers` (array[TelephoneNumber], required) - All telephone details of customer.
++ `interested-in-smart-meter`: true (boolean, optional) - Indicator to specify if customer has expressed interest in smart meters
++ email: kjones@gmail.com (string, required)
++ `multi-premise-landlord`: true (boolean, optional) - Indicator to specify if customer has multi premise landlord accounts in any of the premise.
++ `contract-partner`: 1607645127 (string, optional) - contract partner/owner number of the customer.
++ ucrn: `303612345678` (string, optional) - Unique Customer Reference Number - this may or may not be different to the id of the customer depending on how long they have been a customer of British Gas. 
++ `home-move-eligibility`: true (boolean,optional) - true or false to verify either eligible for home move process.
+
 
 ## Bundles (object)
-+ is-address-used: `true` (boolean, required) - true if already product bundle assingned for address otherwise false
-+ bundles: null (array[Bundle], optional) - list of allowed bundles if is-addresss-used is false otherwise null
++ `is-address-used`: `false` (boolean, required) - true if already product bundle assingned for address otherwise false
++ bundles (array[Bundle], optional) - list of allowed bundles if is-addresss-used is false otherwise null
 
 ## Bundle (object)
 + `id`: 002 (string, required) - id of bundle.
@@ -46,142 +59,130 @@ HOST: http://api.britishgas.co.uk/v1
 + `total-discount`: 700.00 (string, optional) - total discount of bundle
 + `boiler-price`: 1149.00 (string, optional) - price of boiler
 + `installation-price`: 1114.00 (string, optional) - price of bundle installation
-+ `extras` (Extra) (array[Extra], optional) - Extras with bundle product
-+ `allowances` (Allowance) (array[Allowance], optional) - allowances of bundle
++ extras (array[Extra], optional) - Extras with bundle product
++ allowances (array[Allowance], optional) - allowances of bundle
 
-## LeadResponse (object)
-+ `lead-reference`: 123456 (string, required)
-+ `redirect-link`:`http://sample.redirect.com` (string, optional) - Reason for failure
-+ `token`: `RES1234` (string, optional) - Reason for failure
-+ `status`: `success` (string, optional) - Reason for failure
+## Extra (object)
++ code: AW002 (string, required) - code of extra's.
++ name: Powerflush (string, required) - name of extra's.
++ amount: 500.00 (string, required) - price of extra's.
++ required: false (boolean, required) - need of extra's.
 
-## BundleLeadResponse (object)
-+ jsonapi (object)
-   + version: 1.0 (string, required) - version of the json api specifications.
-+ data (LeadResponse)
+## Allowance (object)
++ code: AW002 (string, required) - code of allowance type
++ name: £500.00 off your powerflush (string, required) - name of allowance
++ amount: 500.00 (string, required) - price of allowance
 
-## Error (object)
-+ id: `1528785614271`
-+ detail: `error.client.bundle-details-not-found`
-+ status : `404`
+## AddressRelationship (object)
 
-## ErrorResponse (object)
-+ jsonapi (object)
-   + version: 1.0 (string, required) - version of the json api specifications.
-+ errors (array, required) - data format in fetch product catalogue will be returned.
-   + (Error)
++ links (object, required)
+   + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/correspondenceAddress` (string, required)
+   + related: `http://api.britishgas.co.uk/v1/customers/3612345678/correspondenceAddress` (string, required)
++ data (array[Relation], required)
 
-## Group Find Product Bundle For addess
-Find the available product bundle details for given address 
+## PremiseRelationship (object)
+
++ links (object, required)
+   + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/premises` (string, required)
+   + related: `http://api.britishgas.co.uk/v1/customers/3612345678/premises` (string, required)
++ data (array[Relation], required)
+
+## NotificationRelationship (object)
+
++ links (object, required)
+   + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/notifications` (string, required)
+   + related: `http://api.britishgas.co.uk/v1/customers/3612345678/notifications` (string, required)
++ data (array[Relation], required)
+
+## Relation
+
++ id: 12346 (string, required) - Id of the resource.
++ type (string, required) - Type of the resource.
+
+## ProductBundleResource (object)
+
++ id: `3612345678` (string) - Unique identifier for a customer, bp number, not ucrn
++ type: customers (string) - the resource type
++ attributes (Bundles) - attributes of the resource
+
+## Group Product Bundles
+Product Bundles represents package of multiple products for Online product sales. When you retrieve a bundle, eligible extra and allowances will be included by default.
+
+>Note : `GET /product-bundles` supports to verify existing lead for given address, if only address id will be passed without bundle and extra's then it will be validate addess.If already any bundle associated with adress then return back the error response with empty bundle list.
+
+## Product Bundles [/v1/product-bundles]
+
++ Attributes (ProductBundleResource)
+
+## get all bundles [GET /v1/product-bundles]
+
+Retrieves all product-bundles
+
++ Request
+
+    + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
 
 
-## Verify Address  [GET /product-bundles/{id}]
-> To Verify if addess has any existing bundle associated.
++ Response 200 (application/vnd.api+json)
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - version of the json api specification.
+        + data (array[ProductBundleResource]) - the document’s “primary data”
+
+
+## get a single customer [GET /v1/product-bundles/{id}]
+
+Retrieves specific customer
 
 + Parameters
 
-    + id: `123456` (string) - Id of selected address
+    + id: `3612345678` (string) - Unique Id of the customer, bp number, not ucrn
 
-+ Request get bundles
++ Request
 
-   + Headers
+    + Headers
 
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
             content-type: application/vnd.api+json
-            
-+ Response 200 (application/vnd.api+json)
-
-    + Body
-
-            {
-              "jsonapi": {
-                "version": "1.0"
-              },
-              "data": {
-                "id": "12345",
-                "type": "Bundles",
-                "attributes": {
-                  "is-address-used": true,
-                  "bundles": []
-                    
-                }
-              }
-            }
-   
-
-+ Request `invalid X-Client-ID`
-
-   + Headers
-
+            authorization: Bearer 18d62658-8683-11e6-ae22-56b6b6499611
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
 
-+ Response 403 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: `X-Client-ID not supplied!`
-               + status: 403
-
-+ Request backend failure
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 424 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: dependency failure
-               + status: 424
-
-
-+ Request wrong bundle details passed in the request
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
 
 + Response 200 (application/vnd.api+json)
 
-    + Body
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - version of the json api specificaiton.
+        + data (ProductBundleResource) - the document’s “primary data”
 
-            {
-                "jsonapi": {
-                    "version": "1.0"
-                },
-                "errors": [
-                    {
-                        "detail": "unable to book an appointment",
-                        "id": "1559902487086",
-                        "status": "500"
-                    }
-                ]
-            }
-   
++ Request Retrieves specific anonymous customer
 
-+ Request `invalid X-Client-ID`
+    + Headers
 
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
             content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
 
-+ Response 403 (application/vnd.api+json)
 
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: `X-Client-ID not supplied!`
-               + status: 403
++ Response 200 (application/vnd.api+json)
 
-+ Response 400 (application/vnd.api+json)
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - version of the json api specificaiton.
+        + data (ProductBundleResource) - the document’s “primary data”
+        
++ Request Customer not found - oam
+
+    + Headers
+
+            content-type: application/vnd.api+json
+            authorization: Bearer 18d62658-8683-11e6-ae22-56b6b6499611
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+
++ Response 404 (application/vnd.api+json)
 
     + Attributes (object)
         + jsonapi (object)
@@ -189,218 +190,256 @@ Find the available product bundle details for given address
         + errors (array)
             + (object)
                + id: 1467732747181 (string, required) - a unique identifier for this particular occurrence of the problem.
-               + detail: `error.bundle.not.found` (string) - a human-readable explanation specific to this occurrence of the problem.
-               + status: 400 (string) - the HTTP status code applicable to this problem, expressed as a string value.
+               + detail: `error.customers.not-found` (string) - a human-readable explanation specific to this occurrence of the problem.
+               + status: 404 (string) - the HTTP status code applicable to this problem, expressed as a string value.
 
++ Request Customer not found - anonymous
 
+    + Headers
 
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
 
-##Get Bundle Details [GET /product-bundles]
-> To retrieve eligible bundles for given addresss and passed required details in header.
++ Response 404 (application/vnd.api+json)
 
-+ Request get bundles
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - version of the json api specificaiton.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string, required) - a unique identifier for this particular occurrence of the problem.
+               + detail: `error.customers.not-found` (string) - a human-readable explanation specific to this occurrence of the problem.
+               + status: 404 (string) - the HTTP status code applicable to this problem, expressed as a string value.
+
++ Request Unable to retrieve customer
+
+    + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+            
++ Response 500
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - specification version.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `read customer failed` (string).
+               + status: 500 (string) - character-text equivalent of HTTP code.
+
+## create a new customer [POST /v1/customers]
+
++ Request
 
    + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+
+   + Attributes
+       + data (object, required)
+           + type: customers (string)
+           + attributes (Customer, required)
+           + relationships (object) - related resources for customers
+                + `correspondence-address` (AddressRelationship)
+                    + data (object, required)
+                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
+                        + type: `addresses` (string) - type of resource
+
++ Response 201
+
+   + Header
+
+            Content-Type: application/vnd.api+json
+            Location: api/secure/customers/12345
+
+   + Attributes
+       + data (object, required)
+         + type: customers (string)
+         + id: 12345 (string)
+         + attributes
+                + title: Mr
+                + `first-name`: George
+                + surname: Bush
+                + `date-of-birth`: `2008-09-15T15:53:00+05:00`
+                + `telephone-numbers` (array)
+                    + number: 01132578895, type: home, primary: true
+                    + number: 073817638, type: mobile
+                + `interested-in-smart-meter`: true (boolean)
+                + email: kjones@gmail.com
+         + relationships (object) - related resources for customers
+            + `correspondence-address` (AddressRelationship)
+                + data (object, required)
+                    + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
+                    + type: `addresses` (string) - type of resource
+       + links (object)
+            + self: `http://britishgas.co.uk/v1/customers/12345`
+            
++ Request input validation errors
+
+   + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+
+   + Attributes
+       + data (object, required)
+           + type: customers (string)
+           + attributes
+                + `interested-in-smart-meter`: true (boolean)
+           + relationships (object) - related resources for customers
+                + `correspondence-address` (AddressRelationship)
+                    + data (object, required)
+                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
+                        + type: `addresses` (string) - type of resource
+                        
++ Response 400
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - specification version.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.title.blank` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.first-name.blank` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.surname.blank` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.telephone-numbers.blank` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.email.blank` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+
++ Request invalid inputs
+
+   + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+
+   + Attributes
+       + data (object, required)
+           + type: customers (string)
+           + attributes
+                + title: Mr
+                + `first-name`: "12323" (string)
+                + surname: "3245" (string)
+                + `date-of-birth`: `2008-09-15`
+                + `telephone-numbers` (array)
+                    + number: 01132578895, type: home, primary: true
+                    + number: 0738178, type: mobile
+                + `interested-in-smart-meter`: true (boolean)
+                + email: kjoneailcom
+           + relationships (object) - related resources for customers
+                + `correspondence-address` (AddressRelationship)
+                    + data (object, required)
+                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
+                        + type: `addresses` (string) - type of resource
+                        
++ Response 400
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - specification version.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.first-name.invalid` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.surname.invalid` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.date-of-birth.invalid` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.telephone-number.invalid` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.client.email.invalid` (string).
+               + status: 400 (string) - character-text equivalent of HTTP code.
+               
++ Request unable to create customer
+
+   + Headers
+
+            content-type: application/vnd.api+json
+            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
+
+   + Attributes
+       + data (object, required)
+           + type: customers (string)
+           + attributes (Customer, required)
+           + relationships (object) - related resources for customers
+                + `correspondence-address` (AddressRelationship)
+                    + data (object, required)
+                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
+                        + type: `addresses` (string) - type of resource
+                        
++ Response 500
+
+    + Attributes (object)
+        + jsonapi (object)
+            + version: 1.0 (string) - specification version.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 (string) - an identifier for this error.
+               + detail: `error.customers.not-found` (string).
+               + status: 500 (string) - character-text equivalent of HTTP code.
+
+## Update an Existing Customer [PATCH /v1/customers/{id}]
+**Add** to a customer's existing telephone numbers or update their smart meter interest setting.
++ Request (application/vnd.api+json)
+
+    + Headers
 
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
 
-+ Response 200 (application/vnd.api+json)
+    + Attributes
+        + data (object, required)
+            + type: customers (required, string)
+            + id: 12345 (required, string)
+            + attributes (object)
+                + `telephone-numbers` (array[TelephoneNumber], optional)
+                + `interested-in-smart-meter`: true (boolean, optional)
 
-    + Body
++ Response 204 (application/vnd.api+json)
 
-            {
-              "jsonapi": {
-                "version": "1.0"
-              },
-              "data": {
-                "id": "12345",
-                "type": "Bundles",
-                "attributes": {
-                  "is-address-used": true,
-                  "bundles": [
-                    {
-                      "id": "001",
-                      "boilecode": "CBLR0002",
-                      "boilerName": "Valiant ecoTech plus combi boiler",
-                      "totalBundlePrice": "2599.00",
-                      "boilerPrice": "1149.00",
-                      "installPrice": "1114.00",
-                      "optionalExtras": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001",
-                          "required": "false"
-                        },
-                        {
-                          "name": "Thermostats",
-                          "amount": "260.00",
-                          "code": "PF002",
-                          "required": "false"
-                        }
-                      ],
-                      "allowances": [
-                        {
-                          "name": " £200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": " £50.00 off your powerflush",
-                          "amount": "50.00",
-                          "code": "AW002"
-                        },
-                        {
-                          "name": "£50.00 off your magnetic system fiter",
-                          "amount": "50.00",
-                          "code": "AW003"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "002",
-                      "boilecode": "CBLR0002",
-                      "boilerName": "Valiant ecoTech plus combi boiler",
-                      "totalBundlePrice": "2599.00",
-                      "boilerPrice": "1149.00",
-                      "installPrice": "1114.00",
-                      "optionalExtras": [
-                        {
-                          "name": "Powerflush",
-                          "amount": "260.00",
-                          "code": "PF001",
-                          "required": "false"
-                        }
-                      ],
-                      "allowances": [
-                        {
-                          "name": " £200.00 Homecare loyalty engineer discount",
-                          "amount": "200.00",
-                          "code": "AW004"
-                        },
-                        {
-                          "name": " £50.00 off your powerflush",
-                          "amount": "50.00",
-                          "code": "AW002"
-                        },
-                        {
-                          "name": "£50.00 off your magnetic system fiter",
-                          "amount": "50.00",
-                          "code": "AW003"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
-            }
-   
++ Response 406 (application/vnd.api+json)
+Fields other than telephone and smart meter may not be updated.
 
-+ Request `invalid X-Client-ID`
+    + Attributes
+        + jsonapi
+            + version: 1.0 (string) - specification version.
+        + errors
+            + id: 1467732747181 - an identifier for this error.
+            + detail: `error.customers.not-acceptable`.
+            + status: 406 - character-text equivalent of HTTP code.
 
-   + Headers
++ Response 404 (application/vnd.api+json)
+Customer for update not found.
 
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 403 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: `X-Client-ID not supplied!`
-               + status: 403
-
-## Group Create Bundle Order
-Confirm the product bundle and create the order or booking reference.
-
-# Confirm Bundle Orders [`bundle-order`]
-
-# Confirm Bundle Orders [POST /bundle-order]
-
-+ Request create bundle order 
-
-   + Headers
-
-            x-client-id: `cbdcfa43-dd67-4c38-b418-83572a936fca`
-            content-type: application/vnd.api+json
-
-    + Body
-
-                {
-                  "data": {
-                    "type": "Bundle",
-                    "attributes": {
-                      "as-best-of-identified": "I am not Sure",
-                      "lead-channel": "Online",
-                      "residence-status": "Owner",
-                      "product-interest": "Online Boiler",
-                      "is-home-care": "true",
-                      "is-power-flush": "true",
-                      "fuelType": "Gas"
-                    },
-                    "relationships": {
-                      "address": {
-                        "data": {
-                          "id": "12334456",
-                          "type": "addresses"
-                        }
-                      },
-                      "customer": {
-                        "data": {
-                          "type": "customers",
-                          "id": "3612094486"
-                        }
-                      }
-                    }
-                  }
-                }
-
-+ Response 201 (application/vnd.api+json)
-
-   + Body
-
-            {
-               "data":{
-                  "id":"3214324454325",
-                  "type":"appointments",
-                  "attributes":{
-                     "lead-reference":"1234456",
-                     "redirect-link":"https://redirect.com",
-                     "token":"ER12345",
-                     "status":"success"
-                  }
-               }
-            }
-
-+ Request `invalid X-Client-ID`
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 403 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: `X-Client-ID not supplied!`
-               + status: 403
-
-+ Request backend failure
-
-   + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            content-type: application/vnd.api+json
-
-+ Response 424 (application/vnd.api+json)
-
-   + Attributes (ErrorResponse)
-      + errors (array)
-         + (Error)
-               + detail: dependency failure
-               + status: 424
+     + Attributes
+        + jsonapi
+            + version: 1.0 - specification version.
+        + errors (array)
+            + (object)
+               + id: 1467732747181 - an identifier for this error.
+               + detail: `error.customers.not-found`.
+               + status: 404 - character-text equivalent of HTTP code.
