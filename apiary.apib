@@ -16,33 +16,6 @@ HOST: http://api.britishgas.co.uk/v1
 ## Relationship (object)
 - `data` (Data) - Data of an entity relationship
 
-## TelephoneNumber (object)
-
-+ number: 0738123456 (string, required) - Telephone number
-+ type (enum, optional) - Type of telephone number (`home`, `work` or `mobile`)
-    + home (string)
-    + work (string)
-    + mobile (string)
-    + Default: `home`
-+ primary: false (boolean, optional)
-    + Default: false
-
-## Customer (object)
-
-+ title: Mr (string, required) - Title of customer
-+ `first-name`: George (string, required) - First name of customer
-+ `middle-name`: Walsh (string,optional) - Middle name of the customer
-+ surname: Bush (string, required) - Surname of customer
-+ `date-of-birth`: `2008-09-15T15:53:00+05:00` (string, required) - Date of birth for the customer (expressed in ISO 8601 format)
-+ `telephone-numbers` (array[TelephoneNumber], required) - All telephone details of customer.
-+ `interested-in-smart-meter`: true (boolean, optional) - Indicator to specify if customer has expressed interest in smart meters
-+ email: kjones@gmail.com (string, required)
-+ `multi-premise-landlord`: true (boolean, optional) - Indicator to specify if customer has multi premise landlord accounts in any of the premise.
-+ `contract-partner`: 1607645127 (string, optional) - contract partner/owner number of the customer.
-+ ucrn: `303612345678` (string, optional) - Unique Customer Reference Number - this may or may not be different to the id of the customer depending on how long they have been a customer of British Gas. 
-+ `home-move-eligibility`: true (boolean,optional) - true or false to verify either eligible for home move process.
-
-
 ## Bundles (object)
 + `is-address-used`: `false` (boolean, required) - true if already product bundle assingned for address otherwise false
 + bundles (array[Bundle], optional) - list of allowed bundles if is-addresss-used is false otherwise null
@@ -100,13 +73,6 @@ HOST: http://api.britishgas.co.uk/v1
 + links (object, required)
    + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/premises` (string, required)
    + related: `http://api.britishgas.co.uk/v1/customers/3612345678/premises` (string, required)
-+ data (array[Relation], required)
-
-## NotificationRelationship (object)
-
-+ links (object, required)
-   + self: `http://api.britishgas.co.uk/v1/customers/3612345678/relationships/notifications` (string, required)
-   + related: `http://api.britishgas.co.uk/v1/customers/3612345678/notifications` (string, required)
 + data (array[Relation], required)
 
 ## Relation
