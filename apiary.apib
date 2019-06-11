@@ -82,6 +82,11 @@ HOST: http://api.britishgas.co.uk/v1
 + `fuel-type`: `Gas` - fuel type used by appliances
 + bundle (Bundle) - Selected bundles and extras by customer
 
+## BundleOrderStatusEntity (object)
++ `lead-reference`: `234324sc-ewrerf34-dcs43-dsddasc`
++ `redirect-link`: `services-order-statuses`
++ `token`: `ER12345`
++ `status : `success`
 
 ## AddressRelationship (object)
 
@@ -225,74 +230,17 @@ Retrieves all product-bundles
    + Header
 
             Content-Type: application/vnd.api+json
-            Location: api/secure/customers/12345
-
+           
    + Attributes
        + data (object, required)
-         + type: customers (string)
+         + type: bundle-order-status (string)
          + id: 12345 (string)
          + attributes
-                + title: Mr
-                + `first-name`: George
-                + surname: Bush
-                + `date-of-birth`: `2008-09-15T15:53:00+05:00`
-                + `telephone-numbers` (array)
-                    + number: 01132578895, type: home, primary: true
-                    + number: 073817638, type: mobile
-                + `interested-in-smart-meter`: true (boolean)
-                + email: kjones@gmail.com
-         + relationships (object) - related resources for customers
-            + `correspondence-address` (AddressRelationship)
-                + data (object, required)
-                    + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
-                    + type: `addresses` (string) - type of resource
-       + links (object)
-            + self: `http://britishgas.co.uk/v1/customers/12345`
-            
-+ Request input validation errors
-
-   + Headers
-
-            content-type: application/vnd.api+json
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-
-   + Attributes
-       + data (object, required)
-           + type: customers (string)
-           + attributes
-                + `interested-in-smart-meter`: true (boolean)
-           + relationships (object) - related resources for customers
-                + `correspondence-address` (AddressRelationship)
-                    + data (object, required)
-                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
-                        + type: `addresses` (string) - type of resource
-                        
-+ Response 400
-
-    + Attributes (object)
-        + jsonapi (object)
-            + version: 1.0 (string) - specification version.
-        + errors (array)
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.title.blank` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.first-name.blank` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.surname.blank` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.telephone-numbers.blank` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.client.email.blank` (string).
-               + status: 400 (string) - character-text equivalent of HTTP code.
+                + lead-reference: Mr
+                + `redirect-link`: George
+                + token: Bush
+                + `status`: `2008-09-15T15:53:00+05:00`
+                
 
 + Request invalid inputs
 
@@ -346,72 +294,3 @@ Retrieves all product-bundles
                + id: 1467732747181 (string) - an identifier for this error.
                + detail: `error.client.email.invalid` (string).
                + status: 400 (string) - character-text equivalent of HTTP code.
-               
-+ Request unable to create customer
-
-   + Headers
-
-            content-type: application/vnd.api+json
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-
-   + Attributes
-       + data (object, required)
-           + type: customers (string)
-           + attributes (Customer, required)
-           + relationships (object) - related resources for customers
-                + `correspondence-address` (AddressRelationship)
-                    + data (object, required)
-                        + id: `08937e42-49f0-4e11-90de-343c6b7f73c9` (string) - Id of related address
-                        + type: `addresses` (string) - type of resource
-                        
-+ Response 500
-
-    + Attributes (object)
-        + jsonapi (object)
-            + version: 1.0 (string) - specification version.
-        + errors (array)
-            + (object)
-               + id: 1467732747181 (string) - an identifier for this error.
-               + detail: `error.customers.not-found` (string).
-               + status: 500 (string) - character-text equivalent of HTTP code.
-
-## Update an Existing Customer [PATCH /v1/customers/{id}]
-**Add** to a customer's existing telephone numbers or update their smart meter interest setting.
-+ Request (application/vnd.api+json)
-
-    + Headers
-
-            x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-
-    + Attributes
-        + data (object, required)
-            + type: customers (required, string)
-            + id: 12345 (required, string)
-            + attributes (object)
-                + `telephone-numbers` (array[TelephoneNumber], optional)
-                + `interested-in-smart-meter`: true (boolean, optional)
-
-+ Response 204 (application/vnd.api+json)
-
-+ Response 406 (application/vnd.api+json)
-Fields other than telephone and smart meter may not be updated.
-
-    + Attributes
-        + jsonapi
-            + version: 1.0 (string) - specification version.
-        + errors
-            + id: 1467732747181 - an identifier for this error.
-            + detail: `error.customers.not-acceptable`.
-            + status: 406 - character-text equivalent of HTTP code.
-
-+ Response 404 (application/vnd.api+json)
-Customer for update not found.
-
-     + Attributes
-        + jsonapi
-            + version: 1.0 - specification version.
-        + errors (array)
-            + (object)
-               + id: 1467732747181 - an identifier for this error.
-               + detail: `error.customers.not-found`.
-               + status: 404 - character-text equivalent of HTTP code.
