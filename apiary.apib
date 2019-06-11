@@ -124,8 +124,7 @@ Retrieves all product-bundles
 
             content-type: application/vnd.api+json
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
-            identity-bundle: {"postcode": SK4 4HG, "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
-
+            identity-bundle: {"address-id": "1234356", "bundles": [bundle1,bundle2], "isHomeCare": "Yes", "isPowerFlush": "Yes","extras":"[extra1,extra2]"}
 
 + Response 200 (application/vnd.api+json)
 
@@ -135,20 +134,11 @@ Retrieves all product-bundles
         + data (array[ProductBundleResource]) - the document’s “primary data”
 
 
-## get a single customer [GET /v1/product-bundles/{id}]
-
-Retrieves specific customer
-
-+ Parameters
-
-    + id: `3612345678` (string) - Unique Id of the customer, bp number, not ucrn
-
-+ Request
++ Request Retrieves specific anonymous customer
 
     + Headers
 
             content-type: application/vnd.api+json
-            authorization: Bearer 18d62658-8683-11e6-ae22-56b6b6499611
             x-client-id: cbdcfa43-dd67-4c38-b418-83572a936fca
 
 
