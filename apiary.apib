@@ -71,6 +71,18 @@ HOST: http://api.britishgas.co.uk/v1
 + name: £500.00 off your powerflush (string, required) - name of allowance
 + amount: 500.00 (string, required) - price of allowance
 
+## BundleOrder (object)
++ `is-address-used`: `false` (boolean, required) - true if already product bundle assingned for address otherwise false
++ `as-best-of-identified`: `I am not Sure`
++ `lead-channel`: `Online`
++ `residence-status`: `Owner`
++ `product-interest`: `Online Boiler`
++ `is-home-care`: `true` - to identify if customer is already hom
++ `is-power-flush`: `true` 
++ `fuel-type`: `Gas` - fuel type used by appliances
++ bundle (Bundle) - Selected bundles and extras by customer
+
+
 ## AddressRelationship (object)
 
 + links (object, required)
@@ -196,11 +208,8 @@ Retrieves all product-bundles
 
    + Attributes
        + data (object, required)
-           + type: customers (string)
-           + attributes 
-                + title: Mr
-                + `first-name`: George
-                + surname: Bush
+           + type: bundle-order (string)
+           + attributes (BundleOrder, required)
            + relationships (object) - related resources for customers
                 + `address` (AddressRelationship)
                     + data (object, required)
